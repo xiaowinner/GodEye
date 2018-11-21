@@ -41,10 +41,12 @@ class ConsolePrintViewController: UIViewController {
         
         self.view.addSubview(self.recordTableView)
         self.view.addSubview(self.inputField)
+        
         self.recordTableView.es.addPullToRefresh { [weak self] in
             guard let sself = self else {
                 return
             }
+            
             let result = sself.dataSource.loadPrePage()
             if result == true {
                 sself.recordTableView.reloadData()
