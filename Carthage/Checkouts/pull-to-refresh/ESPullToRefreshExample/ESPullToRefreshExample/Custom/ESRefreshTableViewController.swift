@@ -14,7 +14,7 @@ public class ESRefreshTableViewController: UITableViewController {
     public var page = 1
     public var type: ESRefreshExampleType = .defaulttype
     
-    public override init(style: UITableViewStyle) {
+    public override init(style: UITableView.Style) {
         super.init(style: style)
         for num in 1...8{
             if num % 2 == 0 && arc4random() % 4 == 0 {
@@ -36,7 +36,7 @@ public class ESRefreshTableViewController: UITableViewController {
         
         self.tableView.register(UINib.init(nibName: "ESRefreshTableViewCell", bundle: nil), forCellReuseIdentifier: "ESRefreshTableViewCell")
         self.tableView.register(UINib.init(nibName: "ESPhotoTableViewCell", bundle: nil), forCellReuseIdentifier: "ESPhotoTableViewCell")
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 560
         self.tableView.separatorStyle = .none
         self.tableView.separatorColor = UIColor.clear
@@ -56,17 +56,17 @@ public class ESRefreshTableViewController: UITableViewController {
             break
         }
         
-        self.tableView.es_addPullToRefresh(animator: header) { [weak self] in
+        self.tableView.es.addPullToRefresh(animator: header) { [weak self] in
             self?.refresh()
         }
-        self.tableView.es_addInfiniteScrolling(animator: footer) { [weak self] in
+        self.tableView.es.addInfiniteScrolling(animator: footer) { [weak self] in
             self?.loadMore()
         }
         self.tableView.refreshIdentifier = String.init(describing: type)
-        self.tableView.expriedTimeInterval = 20.0
+        self.tableView.expiredTimeInterval = 20.0
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.tableView.es_autoPullToRefresh()
+            self.tableView.es.autoPullToRefresh()
         }
     }
 
@@ -82,7 +82,7 @@ public class ESRefreshTableViewController: UITableViewController {
                 }
             }
             self.tableView.reloadData()
-            self.tableView.es_stopPullToRefresh()
+            self.tableView.es.stopPullToRefresh()
         }
     }
     
@@ -98,9 +98,9 @@ public class ESRefreshTableViewController: UITableViewController {
                     }
                 }
                 self.tableView.reloadData()
-                self.tableView.es_stopLoadingMore()
+                self.tableView.es.stopLoadingMore()
             } else {
-                self.tableView.es_noticeNoMoreData()
+                self.tableView.es.noticeNoMoreData()
             }
         }
     }

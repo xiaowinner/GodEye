@@ -41,17 +41,15 @@ class ConsolePrintViewController: UIViewController {
         
         self.view.addSubview(self.recordTableView)
         self.view.addSubview(self.inputField)
-        
-        self.recordTableView.es_addPullToRefresh { [weak self] in
+        self.recordTableView.es.addPullToRefresh { [weak self] in
             guard let sself = self else {
                 return
             }
-            
             let result = sself.dataSource.loadPrePage()
             if result == true {
                 sself.recordTableView.reloadData()
             }
-            sself.recordTableView.es_stopPullToRefresh()
+            sself.recordTableView.es.stopPullToRefresh()
         }
         
         NotificationCenter.default.addObserver(self,
@@ -72,7 +70,7 @@ class ConsolePrintViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        var rect = self.view.bounds
+        let rect = self.view.bounds
         if self.type == .command {
             let height: CGFloat = 28.0
             var rect = self.view.bounds
@@ -117,7 +115,7 @@ class ConsolePrintViewController: UIViewController {
     
     @objc private func handleSharedButtonTap() {
         
-        let image = self.recordTableView.swContentCapture { [unowned self] (image:UIImage?) in
+        _ = self.recordTableView.swContentCapture { [unowned self] (image:UIImage?) in
             
             let activity = UIActivityViewController(activityItems: [image], applicationActivities: nil)
             if let popover = activity.popoverPresentationController {
